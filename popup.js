@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     generateButton.addEventListener('click', function () {
       // code to generate quiz
+      fetch("http://backend/question");
       console.log('generating quiz questions...');
     });
   
