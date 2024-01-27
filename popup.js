@@ -8,19 +8,19 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = 'quiz.html';
     }
 
-    generateButton.addEventListener('click', function () {
+    document.generateButton.addEventListener('click', function () {
         // switch screens
         quizScreen();
     });
 
     
-    // generateButton.addEventListener('click', function () {
-    //   // code to generate quiz
-    //   //fetch("http://backend/question");
-    //   console.log('generating quiz questions...');
-    // });
+    document.generateButton.addEventListener('click', function () {
+      // code to generate quiz
+      //fetch("http://backend/question");
+      console.log('generating quiz questions...');
+    });
   
-    pastQuestionsButton.addEventListener('click', function () {
+    document.pastQuestionsButton.addEventListener('click', function () {
       // code to find past quizzez
       //fetch("http://backend/question");
       console.log('Accessing past quiz questions...');
