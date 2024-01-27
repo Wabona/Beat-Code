@@ -54,6 +54,8 @@ body.quiz-page {
     align-items: center;
     justify-content: space-around;
     border-radius: 30px;
+    text-align: center;
+
 }
 
 body.quiz-page .question {
@@ -64,6 +66,7 @@ body.quiz-page .question {
     justify-content: center;
     border: 2px solid darkgray;
     border-radius: 25px;
+    text-align: center;
 }
 
 body.quiz-page .question h1{
@@ -79,33 +82,45 @@ body.quiz-page .options {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
+    text-align: center;
 }
 
-body.quiz-page label{
+body.quiz-page .options span {
+    flex: 0 0 calc(45% - 20px);
+    height: 3rem;
+    margin: 0 auto;
+    border: 2px solid darkgray;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+}
+
+span label{
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     cursor: pointer;
     transition: transform 0.3s;
     font-weight: 600;
     color: rgb(22, 22, 22);
 }
 
-body.quiz-page label:hover{
+span label:hover{
     -ms-transform: scale(1.12);
     -webkit-transform: scale(1.12);
     transform: scale(1.12);
     color: white;
 }
 
-body.quiz-page .input[type="radio"] {
+input[type="radio"] {
     position: relative;
     display: none;
 }
 
 
-body.quiz-page .input[type=radio]:checked ~ .option {
+input[type=radio]:checked ~ .option {
     background: paleturquoise;
 }
