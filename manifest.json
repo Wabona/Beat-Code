@@ -5,6 +5,6 @@
     "version": "1.0",
     "action": {
       "default_popup": "index.html",
-      "default_icon": "B.png"
+      "default_icon": "brain2.png"
     }
   }
