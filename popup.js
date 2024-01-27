@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function quizScreen(){
         window.location.href = 'quiz.html';
     }
+    
+    // checking the answer for the quiz
+    function checkAnswer(){
+
+    }
 
     generateButton.addEventListener('click', function () {
         // switch screens

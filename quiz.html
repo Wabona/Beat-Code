@@ -7,6 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-        <h1>This is the new quiz screen!</h1>    
+    <div id="quiz-container">
+        <h1>BeatCode LeetCode Quiz</h1>
+        <div class="question">What type of traversal did you use to search the binary tree?</div>
+        <div class="options">
+            <div class="option" onclick="checkAnswer('Inorder Traversal')">Inorder Traversal</div>
+            <div class="option" onclick="checkAnswer('Preorder Traversal')">Preorder Traversal</div>
+            <div class="option" onclick="checkAnswer('Postorder Traversal')">Postorder Traversal</div>
+            <div class="option" onclick="checkAnswer('Boundary Traversal')">Boundary Traversal</div>
+        </div>
+        <div id="result"></div>
+    </div>
 </body>
 </html>
