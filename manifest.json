@@ -1,10 +1,10 @@
 {
     "manifest_version": 3,
-    "name": "Beat Code",
+    "name": "Beatcode",
     "description": "LeetCode Extension",
     "version": "1.0",
     "action": {
       "default_popup": "index.html",
-      "default_icon": "B.jpeg"
+      "default_icon": "B.png"
     }
   }
