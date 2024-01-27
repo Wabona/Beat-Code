@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     generateButton.addEventListener('click', function () {
       // code to generate quiz
-      fetch("http://backend/question");
+      //fetch("http://backend/question");
       console.log('generating quiz questions...');
     });
   
     pastQuestionsButton.addEventListener('click', function () {
       // code to find past quizzez
-      fetch("http://backend/question");
+      //fetch("http://backend/question");
       console.log('Accessing past quiz questions...');
     });
   });
