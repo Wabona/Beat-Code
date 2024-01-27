@@ -5,20 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // letting background script know popup opened
   chrome.runtime.sendMessage({ action: "popupOpened" });
 
-  // listening for response from server
-  chrome.runtime.onMessage.addListener(async function (
-    message,
-    sender,
-    sendResponse
-  ) {
-    if (message.action === "serverResponse") {
-      console.log("Response from server:", message.data);
-    }
-  });
+
 
   // handling generate button action
-  generateButton.addEventListener("click", function () {
-    quizScreen();
+  generateButton.addEventListener("click", async function () {
+    showLoadingScreen();
+    console.log("generating quiz questions...");
     // send message to background.js script to take screenshot of webpage and generate questions
     chrome.runtime.sendMessage(
       { action: "takeScreenshot" },
@@ -27,19 +19,32 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     );
 
-    console.log("generating quiz questions...");
+    let serverResponse = await waitForServerResponse();
+    
+    console.log("Response from server:", serverResponse);
+    quizScreen();
   });
 
-  function pastQuizScreen() {
-    window.location.href = "pastquiz.html";
-  }
-  pastQuestionsButton.addEventListener("click", function () {
-    // code to find past quizzez
-    //fetch("http://backend/question");
-    pastQuizScreen();
-    console.log("Accessing past quiz questions...");
-  });
+  // function pastQuizScreen() {
+  //   window.location.href = "pastquiz.html";
+  // }
+  // pastQuestionsButton.addEventListener("click", function () {
+  //   // code to find past quizzez
+  //   //fetch("http://backend/question");
+  //   pastQuizScreen();
+  //   console.log("Accessing past quiz questions...");
+  // });
 });
+
+function waitForServerResponse() {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+      if (message.action === "serverResponse") {
+        resolve(message.data.message.content); // Resolve with the response content
+      }
+    });
+  });
+}
 
 function quizScreen() {
   var quizContainer = document.getElementById('quiz-container');
@@ -114,3 +119,9 @@ function quizScreen() {
 
   quizContainer.innerHTML = quizHtml;
 }
+
+function showLoadingScreen() {
+  let quizContainer = document.getElementById('quiz-container');
+  quizContainer.innerHTML = '<div class="loading">Generating Questions...</div>';
+}
+
