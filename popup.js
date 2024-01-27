@@ -36,16 +36,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   });
 
-
-  // generateButton.addEventListener('click', function () {
-  //   // code to generate quiz
-  //   //fetch("http://backend/question");
-  //   console.log('generating quiz questions...');
-  // });
-
-  pastQuestionsButton.addEventListener('click', function () {
-    // code to find past quizzez
-    //fetch("http://backend/question");
-    console.log('Accessing past quiz questions...');
+    
+    // generateButton.addEventListener('click', function () {
+    //   // code to generate quiz
+    //   //fetch("http://backend/question");
+    //   console.log('generating quiz questions...');
+    // });
+  
+    function pastQuizScreen(){
+      window.location.href = "pastquiz.html";
+    }
+    pastQuestionsButton.addEventListener('click', function () {
+      // code to find past quizzez
+      //fetch("http://backend/question");
+      pastQuizScreen();
+      console.log('Accessing past quiz questions...');
+    });
   });
-});

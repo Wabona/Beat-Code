@@ -1,24 +1,28 @@
-body {
+body.beatcode-page {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-
+    height: 300px;
+    width : 350px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    background-color:lightblue;
 }
 
-#title{
+body.beatcode-page #title{
     color: orangered;
     outline: 2px solid black;
 }
-.container {
+body.body.beatcode-page .container{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 200px;
-    width : 190px;
 }
 
-button {
+body.beatcode-page button{
     padding: 10px 20px;
     margin: 10px;
     font-size: 15px;
@@ -30,6 +34,78 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #2980b9;
+body.pastquiz-page{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: lightblue;
+    height: 300px;
+    width : 350px;
+
+}
+
+body.quiz-page {
+    width: 40rem;
+    height: 30rem;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 30px;
+}
+
+body.quiz-page .question {
+    width: 80%;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid darkgray;
+    border-radius: 25px;
+}
+
+body.quiz-page .question h1{
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 3px;
+}
+
+body.quiz-page .options {
+    width: 80%;
+    height: 12rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+body.quiz-page label{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    font-weight: 600;
+    color: rgb(22, 22, 22);
+}
+
+body.quiz-page label:hover{
+    -ms-transform: scale(1.12);
+    -webkit-transform: scale(1.12);
+    transform: scale(1.12);
+    color: white;
+}
+
+body.quiz-page .input[type="radio"] {
+    position: relative;
+    display: none;
+}
+
+
+body.quiz-page .input[type=radio]:checked ~ .option {
+    background: paleturquoise;
 }
