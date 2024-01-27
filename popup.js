@@ -13,11 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
         quizScreen();
     });
 
-    generateButton.addEventListener('click', function () {
-      // code to generate quiz
-      //fetch("http://backend/question");
-      console.log('generating quiz questions...');
-    });
+    
+    // generateButton.addEventListener('click', function () {
+    //   // code to generate quiz
+    //   //fetch("http://backend/question");
+    //   console.log('generating quiz questions...');
+    // });
   
     pastQuestionsButton.addEventListener('click', function () {
       // code to find past quizzez
