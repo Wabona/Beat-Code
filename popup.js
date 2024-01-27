@@ -4,7 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // button click event handlers
 
     function quizScreen(){
-        window.location.href = 'quiz.html';
+      var quizContainer = document.getElementById('quiz-container');
+      quizContainer.innerHTML = '';
+
+      var quizHtml = ``;
     }
     
     // checking the answer for the quiz
