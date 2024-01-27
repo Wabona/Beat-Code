@@ -27,9 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
     //   console.log('generating quiz questions...');
     // });
   
+    function pastQuizScreen(){
+      window.location.href = "pastquiz.html";
+    }
     pastQuestionsButton.addEventListener('click', function () {
       // code to find past quizzez
       //fetch("http://backend/question");
+      pastQuizScreen();
       console.log('Accessing past quiz questions...');
     });
   });
