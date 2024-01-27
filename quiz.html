@@ -1,45 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
-    <link rel ="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self';" />
+    <link rel="stylesheet" href="style.css" />
     <title>Document</title>
-</head>
-<body class = "quiz-page"> 
+  </head>
+  <body class="quiz-page">
     <div id="quiz-container">
-        <h1>BeatCode LeetCode Quiz</h1>
-        <div class="question">What type of traversal did you use to search the binary tree?</div>
-        <div class="options">
-            <span>
-                <input type="radio" id="option-one" name="option" class="radio" value="optionA" />
-                <label for="option-one" class="option" id="option-one-label">Inorder Traversal</label>
-            </span>
-            
-            <span>
-                <input type="radio" id="option-two" name="option" class="radio" value="optionB" />
-                <label for="option-two" class="option" id="option-two-label">Preorder Traversal</label>
-            </span>
+      <h1>BeatCode LeetCode Quiz</h1>
+      <div class="question">
+        <h1>What type of traversal did you use to search the binary tree?</h1>
+      </div>
+      <div class="options">
+        <input
+          type="radio"
+          id="option-one"
+          name="option"
+          class="radio"
+          value="optionA"
+        />
+        <label for="option-one" class="option" id="option-one-label"
+          >Inorder Traversal</label
+        >
 
+        <input
+          type="radio"
+          id="option-two"
+          name="option"
+          class="radio"
+          value="optionB"
+        />
+        <label for="option-two" class="option" id="option-two-label"
+          >Preorder Traversal</label
+        >
 
-            <span>
-                <input type="radio" id="option-three" name="option" class="radio" value="optionC" />
-                <label for="option-three" class="option" id="option-three-label">Postorder Traversal</label>
-            </span>
+        <input
+          type="radio"
+          id="option-three"
+          name="option"
+          class="radio"
+          value="optionC"
+        />
+        <label for="option-three" class="option" id="option-three-label"
+          >Postorder Traversal</label
+        >
 
+        <input
+          type="radio"
+          id="option-four"
+          name="option"
+          class="radio"
+          value="optionD"
+        />
+        <label for="option-four" class="option" id="option-four-label"
+          >Boundary Traversal</label
+        >
+      </div>
+      <div class="buttons">
+        <button>Submit</button>
+        <button>Next Question></button>
+      </div>
 
-            <span>
-                <input type="radio" id="option-four" name="option" class="radio" value="optionD" />
-                <label for="option-four" class="option" id="option-four-label">Boundary Traversal</label>
-            </span>
-        </div>
-        <div class="buttons">
-            <button>Submit</button>
-            <button>Next Question></button>
-        </div>
-
-        <div id="result"></div>
+      <div id="result"></div>
     </div>
-</body>
+  </body>
 </html>
