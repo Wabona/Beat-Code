@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // handling generate button action
   generateButton.addEventListener("click", async function () {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
-      var currentTab = tabs[0];
+      let currentTab = tabs[0];
       if (currentTab.url.includes("leetcode.com")) {
         showLoadingScreen();
         console.log("generating quiz questions...");
@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let quizQuestions = await waitForServerResponse();
         quizQuestions = removeMarkdownCodeBlock(quizQuestions);
 
+        console.log(quizQuestions);
         const quizJson = JSON.parse(quizQuestions);
 
         quizScreen(function () {
@@ -51,6 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } else {
         console.log("Not on leetcode.com. Quiz not generated.");
+
+        generateButton.innerHTML = "Tab must be on leetcode.com"
+        setTimeout(function () {
+          generateButton.innerHTML = "Generate Quiz Questions";
+        }, 1700);
       }
     });
   });
@@ -90,54 +96,57 @@ function nextQuestion(quizJson) {
   document.getElementById("option-three-label").innerHTML = currentQuestion.answers[2];
   document.getElementById("option-four-label").innerHTML = currentQuestion.answers[3];
   index++;
-  if(index == quizJson.quiz.length){
+  console.log("Current index", index);
+  if (index >= quizJson.quiz.length) {
+    console.log("END OF QUIZ");
     endOfQuiz();
   }
 }
 
 function quizScreen(callback) {
-  var quizContainer = document.getElementById('quiz-container');
+  let quizContainer = document.getElementById('quiz-container');
   quizContainer.innerHTML = '';
 
-  var quizHtml = `
-  <div class="bg-gray-900 min-h-screen flex flex-col items-center justify-center text-white p-4">
-  <h1 class="text-2xl font-bold mb-6">BeatCode Quiz</h1>
-  <div class="mb-8 text-center" id="question"></div>
-  <form class="flex flex-col gap-4 mb-8">
+  let quizHtml = `
+  <div class="bg-gray-900 min-h-screen flex flex-col items-center justify-center p-4">
+  <div class="bg-gray-800 rounded-lg p-6 text-white w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6">BeatCode Quiz</h1>
+    <div class="font-bold mb-6 text-left" id="question"></div>
+    <form class="flex flex-col gap-4 mb-8 w-full">
       <label class="inline-flex items-center">
-          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="0" name="option" />
-          <span id="option-one-label" class="ml-2"></span>
+        <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="0" name="option" />
+        <span id="option-one-label" class="ml-2"></span>
       </label>
       <label class="inline-flex items-center">
-          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="1" name="option" />
-          <span id="option-two-label" class="ml-2"></span>
+        <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="1" name="option" />
+        <span id="option-two-label" class="ml-2"></span>
       </label>
       <label class="inline-flex items-center">
-          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="2"
-              name="option" />
-          <span id="option-three-label" class="ml-2"></span>
+        <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="2" name="option" />
+        <span id="option-three-label" class="ml-2"></span>
       </label>
       <label class="inline-flex items-center">
-          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="3"
-              name="option" />
-          <span id="option-four-label" class="ml-2"></span>
+        <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="3" name="option" />
+        <span id="option-four-label" class="ml-2"></span>
       </label>
-  </form>
+    </form>
+    <div class="flex space-x-4 justify-center w-full">
+      <button id="submitButton" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-blue-600 hover:bg-blue-500">
+        Submit
+      </button>
+      <button id="nextButton" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-green-600 hover:bg-green-500">
+        Next
+      </button>
+    </div>
+    <br>
+    <div class="mt-6 flex justify-center space-x-2 text-sm font-medium text-gray-600">
+      <div class="ml-2" id="score"> Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}</div>
+      <div class="ml-2" id="selectedOption"></div>
+    </div>
+    <div class="mt-6 flex justify-center space-x-2 text-sm font-medium text-gray-600" id="result"></div>
+  </div>
+</div>
 
-  <div class="flex justify-between mt-8">
-  <button id="submitButton" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-blue-600 hover:bg-blue-500">
-    Submit
-  </button>
-  <button id="nextButton" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-green-600 hover:bg-green-500">
-    Next Question
-  </button>
-</div>
-<div class="mt-6 flex justify-center space-x-2 text-sm font-medium text-gray-600">
-  <div class="ml-2" id="score"> Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}</div>
-  <div class="ml-2" id="selectedOption"></div>
-</div>
-<div class="mt-6 flex justify-center space-x-2 text-sm font-medium text-gray-600" id="result"></div>
-</div>
     `;
 
   quizContainer.innerHTML = quizHtml;
@@ -180,7 +189,25 @@ function checkAnswer(correctIndex) {
   document.getElementById("score").innerText = `Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}`;
 }
 
-function endOfQuiz(){
-  let quizContainer = document.getElementById("quiz-container").innerHTML = "0";
-  // if(correctAnswers <= )
+function endOfQuiz() {
+  let quizContainer = document.getElementById("quiz-container");
+  quizContainer.innerHTML = '<div class ="text-white"> Quiz Completed </div>';
+
+  const scoreContainer = document.createElement("div");
+  scoreContainer.className = "mt-6 flex justify-center space-x-2 text-sm font-medium text-white pb-5";
+  scoreContainer.innerHTML = `<div class="ml-2"> Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}</div>`;
+
+  const resetButton = document.createElement("button");
+  resetButton.className = ""
+
+  resetButton.addEventListener("click", function () {
+    quizJson();
+    //reset quiz state
+    correctAnswers = 0;
+    incorrectAnswers = 0;
+    index = 0;
+  });
+
+  quizContainer.appendChild(scoreContainer);
+  quizContainer.appendChild(resetButton);
 }
