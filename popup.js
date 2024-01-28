@@ -1,5 +1,6 @@
 let correctAnswers = 0;
 let incorrectAnswers = 0;
+let quizJson = null;
 
 document.addEventListener("DOMContentLoaded", function () {
   let generateButton = document.getElementById("generateQuiz");
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         quizQuestions = removeMarkdownCodeBlock(quizQuestions);
 
         console.log(quizQuestions);
-        const quizJson = JSON.parse(quizQuestions);
+        quizJson = JSON.parse(quizQuestions);
 
         quizScreen(function () {
           nextQuestion(quizJson);
@@ -60,19 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-
-
-
-  // function pastQuizScreen() {
-  //   window.location.href = "pastquiz.html";
-  // }
-  // pastQuestionsButton.addEventListener("click", function () {
-  //   // code to find past quizzez
-  //   //fetch("http://backend/question");
-  //   pastQuizScreen();
-  //   console.log("Accessing past quiz questions...");
-  // });
 });
 
 function waitForServerResponse() {
@@ -191,23 +179,45 @@ function checkAnswer(correctIndex) {
 
 function endOfQuiz() {
   let quizContainer = document.getElementById("quiz-container");
-  quizContainer.innerHTML = '<div class ="text-white"> Quiz Completed </div>';
-
+  quizContainer.innerHTML = '<div class ="text-white text-2xl"> Quiz Completed </div>';
+  const breakTag = document.createElement("br");
   const scoreContainer = document.createElement("div");
   scoreContainer.className = "mt-6 flex justify-center space-x-2 text-sm font-medium text-white pb-5";
   scoreContainer.innerHTML = `<div class="ml-2"> Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}</div>`;
-
   const resetButton = document.createElement("button");
-  resetButton.className = ""
+  resetButton.className = "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white";
+  resetButton.innerHTML = "Start a new Quiz";
+
+  quizContainer.appendChild(scoreContainer);
+  quizContainer.appendChild(breakTag);
+  quizContainer.appendChild(resetButton);
 
   resetButton.addEventListener("click", function () {
-    quizJson();
     //reset quiz state
     correctAnswers = 0;
     incorrectAnswers = 0;
     index = 0;
+    quizScreen(function () {
+      nextQuestion(quizJson);
+      let submitButton = document.getElementById("submitButton");
+      if (submitButton) {
+        submitButton.addEventListener("click", function () {
+          checkAnswer(quizJson.quiz[index - 1].correctIndex);
+          submitButton.disabled = true;
+        });
+      } else {
+        console.log("Submit Button not found");
+      }
+
+      let nextQuestionButton = document.getElementById("nextButton");
+      if (nextQuestionButton) {
+        nextQuestionButton.addEventListener("click", function () {
+          nextQuestion(quizJson);
+          submitButton.disabled = false;
+        });
+      }
+    });
   });
 
-  quizContainer.appendChild(scoreContainer);
-  quizContainer.appendChild(resetButton);
+
 }
