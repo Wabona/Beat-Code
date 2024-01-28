@@ -7,15 +7,34 @@
     <title>Beat Code</title>
     <script nonce="generated_nonce" src ="popup.js"></script>
     <link rel ="stylesheet" href="style.css">
+    <link rel ="stylesheet" href="output.css">
 </head>
 <!--basically a main page for BeatCode-->
-<body class= "beatcode-page">
+<body>
+    <div id="quiz-container" class="dark flex min-h-screen flex-col items-center justify-center bg-gray-900 p-6">
+        <div class="w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-lg">
+          <h1 class="text-center text-4xl font-bold text-white">BeatCode!</h1>
+          <h2 class="mt-4 text-center text-2xl font-semibold text-gray-400">Interview Prep Redefined</h2>
+          <div class="mt-8 flex flex-col space-y-4">
+            <button id="generateQuiz" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full bg-blue-600 text-white hover:bg-blue-700">
+              Generate Quiz Questions
+            </button>
+            <button id="pastQuestions" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full bg-blue-600 text-white hover:bg-blue-700">
+              Find Past Quiz Questions
+            </button>
+          </div>
+        </div>
+      </div>
+      
+</body>
+
+<!-- <body class= "beatcode-page">
     <h2 id="title"> BeatCode! </h2>
     <h4> DAILY SPACED REPETITION</h4>
     <div id="quiz-container">
         <button id="generateQuiz">Generate Quiz Questions</button>
         <button id="pastQuestions">Find Past Quiz Questions</button>
     </div>
-</body>
+</body> -->
 </html>
 

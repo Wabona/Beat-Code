@@ -5,7 +5,8 @@
     "version": "1.0",
     "permissions": ["activeTab", "scripting", "storage"],
     "host_permissions": [
-      "http://localhost:3000/*"
+      "http://localhost:3000/*",
+      "https://cdn.tailwindcss.com/*"
     ],
     "background": {
       "service_worker": "background.js"

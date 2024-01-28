@@ -11,42 +11,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // handling generate button action
   generateButton.addEventListener("click", async function () {
-    showLoadingScreen();
-    console.log("generating quiz questions...");
-    // send message to background.js script to take screenshot of webpage and generate questions
-    chrome.runtime.sendMessage(
-      { action: "takeScreenshot" },
-      function (response) {
-        console.log("Received response: ", response);
-      }
-    );
+    chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
+      var currentTab = tabs[0];
+      if (currentTab.url.includes("leetcode.com")) {
+        showLoadingScreen();
+        console.log("generating quiz questions...");
+        // send message to background.js script to take screenshot of webpage and generate questions
+        chrome.runtime.sendMessage(
+          { action: "takeScreenshot" },
+          function (response) {
+            console.log("Received response: ", response);
+          }
+        );
 
-    let quizQuestions = await waitForServerResponse();
-    quizQuestions = removeMarkdownCodeBlock(quizQuestions);
+        let quizQuestions = await waitForServerResponse();
+        quizQuestions = removeMarkdownCodeBlock(quizQuestions);
 
-    const quizJson = JSON.parse(quizQuestions);
+        const quizJson = JSON.parse(quizQuestions);
 
-    quizScreen(function () {
-      nextQuestion(quizJson);
-      let submitButton = document.getElementById("submitButton");
-      if (submitButton) {
-        submitButton.addEventListener("click", function () {
-          checkAnswer(quizJson.quiz[index-1].correctIndex);
+        quizScreen(function () {
+          nextQuestion(quizJson);
+          let submitButton = document.getElementById("submitButton");
+          if (submitButton) {
+            submitButton.addEventListener("click", function () {
+              checkAnswer(quizJson.quiz[index - 1].correctIndex);
+              submitButton.disabled = true;
+            });
+          } else {
+            console.log("Submit Button not found");
+          }
+
+          let nextQuestionButton = document.getElementById("nextButton");
+          if (nextQuestionButton) {
+            nextQuestionButton.addEventListener("click", function () {
+              nextQuestion(quizJson);
+              submitButton.disabled = false;
+            });
+          }
         });
       } else {
-        console.log("Submit Button not found");
-      }
-
-      let nextQuestionButton = document.getElementById("nextButton");
-      if(nextQuestionButton) {
-        nextQuestionButton.addEventListener("click", function () {
-          nextQuestion(quizJson);
-        });
+        console.log("Not on leetcode.com. Quiz not generated.");
       }
     });
   });
 
-  
+
 
 
   // function pastQuizScreen() {
@@ -81,6 +90,9 @@ function nextQuestion(quizJson) {
   document.getElementById("option-three-label").innerHTML = currentQuestion.answers[2];
   document.getElementById("option-four-label").innerHTML = currentQuestion.answers[3];
   index++;
+  if(index == quizJson.quiz.length){
+    endOfQuiz();
+  }
 }
 
 function quizScreen(callback) {
@@ -88,72 +100,44 @@ function quizScreen(callback) {
   quizContainer.innerHTML = '';
 
   var quizHtml = `
-      <h1>BeatCode LeetCode Quiz</h1>
-      <div class="question">
-        <h1 id="question"></h1>
-      </div>
-      <div class="options">
-        <span>
-            <input
-            type="radio"
-            id="option-one"
-            name="option"
-            class="radio"
-            value="0"
-            />
-            <label for="option-one" class="option" id="option-one-label"
-            ></label
-            >
-        </span>
+  <div class="bg-gray-900 min-h-screen flex flex-col items-center justify-center text-white p-4">
+  <h1 class="text-2xl font-bold mb-6">BeatCode Quiz</h1>
+  <div class="mb-8 text-center" id="question"></div>
+  <form class="flex flex-col gap-4 mb-8">
+      <label class="inline-flex items-center">
+          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="0" name="option" />
+          <span id="option-one-label" class="ml-2"></span>
+      </label>
+      <label class="inline-flex items-center">
+          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="1" name="option" />
+          <span id="option-two-label" class="ml-2"></span>
+      </label>
+      <label class="inline-flex items-center">
+          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="2"
+              name="option" />
+          <span id="option-three-label" class="ml-2"></span>
+      </label>
+      <label class="inline-flex items-center">
+          <input class="form-radio bg-gray-700 hover:bg-gray-600 text-white" type="radio" value="3"
+              name="option" />
+          <span id="option-four-label" class="ml-2"></span>
+      </label>
+  </form>
 
-        <span>
-            <input
-            type="radio"
-            id="option-two"
-            name="option"
-            class="radio"
-            value="1"
-            />
-            <label for="option-two" class="option" id="option-two-label"
-            ></label
-            >
-        </span>
-
-        <span>
-            <input
-            type="radio"
-            id="option-three"
-            name="option"
-            class="radio"
-            value="2"
-            />
-            <label for="option-three" class="option" id="option-three-label"
-            ></label
-            >
-        </span>
-
-        <span>
-            <input
-            type="radio"
-            id="option-four"
-            name="option"
-            class="radio"
-            value="3"
-            />
-            <label for="option-four" class="option" id="option-four-label"
-            ></label
-            >
-        </span>
-
-      </div>
-      <div class="buttons">
-        <button id="submitButton">Submit</button>
-        <button id="nextButton">Next Question></button>
-      </div>
-
-      <div id="result"></div>
-      <div id="score"> Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}</div>
-      <div id="selectedOption"></div>
+  <div class="flex justify-between mt-8">
+  <button id="submitButton" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-blue-600 hover:bg-blue-500">
+    Submit
+  </button>
+  <button id="nextButton" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-green-600 hover:bg-green-500">
+    Next Question
+  </button>
+</div>
+<div class="mt-6 flex justify-center space-x-2 text-sm font-medium text-gray-600">
+  <div class="ml-2" id="score"> Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}</div>
+  <div class="ml-2" id="selectedOption"></div>
+</div>
+<div class="mt-6 flex justify-center space-x-2 text-sm font-medium text-gray-600" id="result"></div>
+</div>
     `;
 
   quizContainer.innerHTML = quizHtml;
@@ -165,7 +149,7 @@ function quizScreen(callback) {
 
 function showLoadingScreen() {
   let quizContainer = document.getElementById('quiz-container');
-  quizContainer.innerHTML = '<div class="loading">Generating Questions...</div>';
+  quizContainer.innerHTML = '<div class="text-white">Generating Questions...</div>';
 }
 
 function removeMarkdownCodeBlock(text) {
@@ -194,4 +178,9 @@ function checkAnswer(correctIndex) {
   }
 
   document.getElementById("score").innerText = `Correct: ${correctAnswers} | Wrong: ${incorrectAnswers}`;
+}
+
+function endOfQuiz(){
+  let quizContainer = document.getElementById("quiz-container").innerHTML = "0";
+  // if(correctAnswers <= )
 }

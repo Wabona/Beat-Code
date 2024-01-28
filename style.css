@@ -1,4 +1,14 @@
-body.beatcode-page {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    width: 400px;  /* Your desired width */
+    height: 500px; /* Your desired height */
+    margin: 0;
+    padding: 0;
+}
+/* body.beatcode-page {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
@@ -123,4 +133,4 @@ input[type="radio"] {
 
 input[type=radio]:checked ~ .option {
     background: paleturquoise;
-}
+} */
